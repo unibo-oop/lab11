@@ -38,7 +38,7 @@ public class MultiThreadedSumMatrixWithStreams implements SumMatrix {
                 .iterate(0, start -> start + size)
                 .limit(nthread)
                 /*
-                 * We do not create thread ourselves. We decide how tasks should be done, and we
+                 * We do not create threads ourselves. We decide how tasks should be done, and we
                  * ask the Stream library to spawn the required threads.
                  */
                 .parallel()
