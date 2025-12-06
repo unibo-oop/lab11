@@ -1,11 +1,10 @@
 package it.unibo.oop.reactivegui03;
 
 import it.unibo.oop.JFrameUtil;
+import org.jooq.lambda.Unchecked;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.Serial;
 import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
@@ -18,13 +17,14 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
 /**
- * Third experiment with reactive gui.
+ * Third experiment with reactive gui, solution using lambdas.
  */
-public final class AnotherConcurrentGUI extends JFrame {
+public final class AnotherConcurrentGUIWithLambdas extends JFrame {
 
+    @Serial
     private static final long serialVersionUID = 1L;
     private static final long WAITING_TIME = TimeUnit.SECONDS.toMillis(10);
-    private static final Logger LOGGER = LoggerFactory.getLogger(AnotherConcurrentGUI.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(AnotherConcurrentGUIWithLambdas.class);
 
     private final JLabel display = new JLabel();
     private final JButton stop = new JButton("stop");
@@ -36,7 +36,7 @@ public final class AnotherConcurrentGUI extends JFrame {
     /**
      * Builds a C3GUI.
      */
-    public AnotherConcurrentGUI() {
+    public AnotherConcurrentGUIWithLambdas() {
         JFrameUtil.dimensionJFrame(this);
         final JPanel panel = new JPanel();
         panel.add(display);
@@ -45,47 +45,24 @@ public final class AnotherConcurrentGUI extends JFrame {
         panel.add(stop);
         this.getContentPane().add(panel);
         this.setVisible(true);
-        up.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(final ActionEvent e) {
-                counterAgent.upCounting();
-            }
-        });
-        down.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(final ActionEvent e) {
-                counterAgent.downCounting();
-            }
-        });
-        stop.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(final ActionEvent e) {
-                AnotherConcurrentGUI.this.stopCounting();
-            }
-        });
+        up.addActionListener(e -> counterAgent.upCounting());
+        down.addActionListener(e -> counterAgent.downCounting());
+        stop.addActionListener(e -> this.stopCounting());
         new Thread(counterAgent).start();
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    Thread.sleep(WAITING_TIME);
-                } catch (final InterruptedException ex) {
-                    LOGGER.error(ex.getMessage(), ex);
-                }
-                AnotherConcurrentGUI.this.stopCounting();
-            }
-        }).start();
+        new Thread(
+            Unchecked.runnable(() -> { // Using jOOL to avoid try-catch
+                Thread.sleep(WAITING_TIME);
+                this.stopCounting();
+            })
+        ).start();
     }
 
     private void stopCounting() {
         counterAgent.stopCounting();
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                stop.setEnabled(false);
-                up.setEnabled(false);
-                down.setEnabled(false);
-            }
+        SwingUtilities.invokeLater(() -> {
+            stop.setEnabled(false);
+            up.setEnabled(false);
+            down.setEnabled(false);
         });
     }
 
@@ -102,12 +79,7 @@ public final class AnotherConcurrentGUI extends JFrame {
             while (!stop) {
                 try {
                     final var nextText = Integer.toString(counter);
-                    SwingUtilities.invokeAndWait(new Runnable() {
-                        @Override
-                        public void run() {
-                            display.setText(nextText);
-                        }
-                    });
+                    SwingUtilities.invokeAndWait(() -> display.setText(nextText));
                     counter += up ? 1 : -1;
                     Thread.sleep(100);
                 } catch (InterruptedException | InvocationTargetException ex) {

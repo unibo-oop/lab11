@@ -10,6 +10,11 @@ repositories {
     mavenCentral()
 }
 
+application  {
+    // Define the main class for the application.
+    mainClass.set("it.unibo.oop.lab.streams.LambdaFilter")
+}
+
 dependencies {
     // The BOM (Bill of Materials) synchronizes all the versions of Junit coherently.
     testImplementation(platform("org.junit:junit-bom:6.0.1"))
