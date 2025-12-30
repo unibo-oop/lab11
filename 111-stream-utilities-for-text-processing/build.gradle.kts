@@ -3,7 +3,7 @@ import org.gradle.api.tasks.testing.logging.TestLogEvent
 plugins {
     java
     application
-    id("org.danilopianini.gradle-java-qa") version "1.161.0"
+    id("org.danilopianini.gradle-java-qa") version "1.162.0"
 }
 
 repositories {
