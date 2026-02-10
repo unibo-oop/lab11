@@ -1,7 +1,7 @@
 plugins {
     java
     application
-    id("org.danilopianini.gradle-java-qa") version "1.164.0"
+    id("org.danilopianini.gradle-java-qa") version "1.166.0"
 }
 
 repositories {
@@ -18,7 +18,7 @@ dependencies {
     //  JOOL: Java 8+ Fluent API for JDK 8+ Streams
     implementation("org.jooq:jool:0.9.15")
     // Logback backend for SLF4J
-    runtimeOnly("ch.qos.logback:logback-classic:1.5.28")
+    runtimeOnly("ch.qos.logback:logback-classic:1.5.29")
 }
 
 
