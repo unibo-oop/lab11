@@ -13,7 +13,7 @@ tasks.javadoc {
 }
 
 dependencies {
-    compileOnly("com.github.spotbugs:spotbugs-annotations:4.10.1")
+    compileOnly("com.github.spotbugs:spotbugs-annotations:4.10.2")
     implementation("org.slf4j:slf4j-api:2.0.18")
     //  JOOL: Java 8+ Fluent API for JDK 8+ Streams
     implementation("org.jooq:jool:0.9.15")
