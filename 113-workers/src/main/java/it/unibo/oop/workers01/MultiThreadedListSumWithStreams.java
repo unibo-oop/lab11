@@ -32,9 +32,9 @@ public final class MultiThreadedListSumWithStreams implements SumList {
             .limit(nthread)
             .mapToObj(start -> new Worker(list, start, size))
             // Start them
-            .peek(Thread::start)
+            .peek(worker -> worker.thread.start())
             // Join them
-            .peek(MultiThreadedListSumWithStreams::joinUninterruptibly)
+            .peek(worker -> joinUninterruptibly(worker.thread))
             // Get their result and sum
             .mapToLong(Worker::getResult)
             .sum();
@@ -53,10 +53,11 @@ public final class MultiThreadedListSumWithStreams implements SumList {
         }
     }
 
-    private static class Worker extends Thread {
+    private static class Worker implements Runnable {
         private final List<Integer> list;
         private final int startpos;
         private final int nelem;
+        private final Thread thread;
         private long res;
 
         /**
@@ -73,6 +74,7 @@ public final class MultiThreadedListSumWithStreams implements SumList {
             this.list = list;
             this.startpos = startpos;
             this.nelem = nelem;
+            this.thread = new Thread(this);
         }
 
         @Override
@@ -88,7 +90,7 @@ public final class MultiThreadedListSumWithStreams implements SumList {
          *
          * @return the sum of every element in the array
          */
-        public synchronized long getResult() {
+        synchronized long getResult() {
             return this.res;
         }
 

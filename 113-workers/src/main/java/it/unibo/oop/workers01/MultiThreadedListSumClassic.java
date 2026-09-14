@@ -43,10 +43,10 @@ public final class MultiThreadedListSumClassic implements SumList {
          * futures.
          */
         long sum = 0;
-        for (final Worker w: workers) {
+        for (final Worker worker: workers) {
             try {
-                w.join();
-                sum += w.getResult();
+                worker.join();
+                sum += worker.getResult();
             } catch (final InterruptedException e) {
                 throw new IllegalStateException(e);
             }
@@ -57,10 +57,11 @@ public final class MultiThreadedListSumClassic implements SumList {
         return sum;
     }
 
-    private static class Worker extends Thread {
+    private static class Worker implements Runnable {
         private final List<Integer> list;
         private final int startpos;
         private final int nelem;
+        private final Thread thread;
         private long res;
 
         /**
@@ -77,6 +78,15 @@ public final class MultiThreadedListSumClassic implements SumList {
             this.list = list;
             this.startpos = startpos;
             this.nelem = nelem;
+            this.thread = new Thread(this);
+        }
+
+        void start() {
+            thread.start();
+        }
+
+        void join() throws InterruptedException {
+            thread.join();
         }
 
         @Override
