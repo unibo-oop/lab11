@@ -9,7 +9,6 @@ import java.util.List;
 /**
  * TestMatrix for worker 1.
  */
-@SuppressWarnings("PMD.SystemPrintln")
 class TestListSumClassic {
 
     /**
@@ -37,7 +36,7 @@ class TestListSumClassic {
             list.add(i);
             sum += i;
         }
-        System.out.println("BTW: the sum with " + SIZE + " elements is: " + sum);
+        IO.println("BTW: the sum with " + SIZE + " elements is: " + sum);
         /*
          * Prepare time ant test with different number of threads
          */
@@ -46,7 +45,7 @@ class TestListSumClassic {
             final SumList sumList = new MultiThreadedListSumClassic(threads);
             time = System.currentTimeMillis();
             assertEquals(sum, sumList.sum(list));
-            System.out.println("Tried with " + threads + " thread: "
+            IO.println("Tried with " + threads + " thread: "
                     + (System.currentTimeMillis() - time) + MSEC);
         }
     }

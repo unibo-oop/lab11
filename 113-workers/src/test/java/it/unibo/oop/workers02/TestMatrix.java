@@ -8,7 +8,6 @@ import java.util.concurrent.TimeUnit;
 /**
  * TestMatrix for worker 2.
  */
-@SuppressWarnings("PMD.SystemPrintln")
 class TestMatrix {
 
     /*
@@ -45,7 +44,7 @@ class TestMatrix {
                 sum += i;
             }
         }
-        System.out.println("BTW: the sum with " + SIZE + "*" + SIZE + " elements is: " + sum);
+        IO.println("BTW: the sum with " + SIZE + "*" + SIZE + " elements is: " + sum);
         long time;
         for (final int threads : new int[] {1, 2, 3, 8, 16, 32, 100}) {
             // Replace with your implementation
@@ -59,7 +58,7 @@ class TestMatrix {
             time = System.nanoTime();
             assertEquals(sum, sumList.sum(matrix), EXPECTED_DELTA);
             time = System.nanoTime() - time;
-            System.out.println("Tried with " + threads + " thread"
+            IO.println("Tried with " + threads + " thread"
                     + (threads == 1 ? "" : "s") + ": "
                     + TimeUnit.NANOSECONDS.toMillis(time) + MSEC);
         }
