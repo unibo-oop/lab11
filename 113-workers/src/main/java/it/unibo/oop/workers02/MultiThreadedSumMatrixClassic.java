@@ -34,9 +34,10 @@ public class MultiThreadedSumMatrixClassic implements SumMatrix {
         final int size = matrix.length / nthread + matrix.length % nthread;
         final List<Worker> workers = new ArrayList<>(nthread);
         for (int start = 0; start < matrix.length; start += size) {
-            workers.add(new Worker(matrix, start, size));
+            final Worker worker = new Worker(matrix, start, size);
+            workers.add(worker);
         }
-        for (final Thread worker: workers) {
+        for (final Worker worker: workers) {
             worker.start();
         }
         double sum = 0;
@@ -51,11 +52,12 @@ public class MultiThreadedSumMatrixClassic implements SumMatrix {
         return sum;
     }
 
-    private static final class Worker extends Thread {
+    private static final class Worker implements Runnable {
 
         private final double[][] matrix;
         private final int startpos;
         private final int nelem;
+        private final Thread thread;
         private double res;
 
         /**
@@ -69,10 +71,18 @@ public class MultiThreadedSumMatrixClassic implements SumMatrix {
          *            the no. of element for him to sum
          */
         private Worker(final double[][] matrix, final int startpos, final int nelem) {
-            super();
             this.matrix = matrix;
             this.startpos = startpos;
             this.nelem = nelem;
+            this.thread = new Thread(this);
+        }
+
+        void start() {
+            thread.start();
+        }
+
+        void join() throws InterruptedException {
+            thread.join();
         }
 
         @Override
@@ -84,7 +94,7 @@ public class MultiThreadedSumMatrixClassic implements SumMatrix {
             }
         }
 
-        public synchronized double getResult() {
+        synchronized double getResult() {
             return this.res;
         }
 

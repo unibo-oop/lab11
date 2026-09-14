@@ -85,15 +85,15 @@ public final class ConcurrentGUI extends JFrame {
             }
         }
 
-        public void stopCounting() {
+        void stopCounting() {
             this.stop = true;
         }
 
-        public void countUp() {
+        void countUp() {
             this.up = true;
         }
 
-        public void countDown() {
+        void countDown() {
             this.up = false;
         }
     }
