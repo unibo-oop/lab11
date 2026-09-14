@@ -80,7 +80,7 @@ public final class LambdaFilter extends JFrame {
             return commandName;
         }
 
-        public String translate(final String s) {
+        String translate(final String s) {
             return fun.apply(s);
         }
     }
