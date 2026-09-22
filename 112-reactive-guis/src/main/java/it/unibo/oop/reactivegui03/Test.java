@@ -23,11 +23,8 @@ public final class Test {
 
     /**
      * Main method to start the GUI.
-     *
-     * @param args
-     *            unused
      */
-    public static void main(final String... args) {
+    public static void main() {
         new AnotherConcurrentGUI();
     }
 }
