@@ -119,9 +119,9 @@ public final class LambdaFilter extends JFrame {
     }
 
     /**
-     * @param a unused
+     * Program entry point.
      */
-    public static void main(final String... a) {
+    public static void main() {
         final LambdaFilter gui = new LambdaFilter();
         gui.setVisible(true);
     }
