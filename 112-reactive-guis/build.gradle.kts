@@ -24,7 +24,7 @@ dependencies {
     //  JOOL: Java 8+ Fluent API for JDK 8+ Streams
     implementation("org.jooq:jool:0.9.16")
     // Logback backend for SLF4J
-    runtimeOnly("ch.qos.logback:logback-classic:1.6.6")
+    runtimeOnly("ch.qos.logback:logback-classic:1.6.7")
 }
 
 
